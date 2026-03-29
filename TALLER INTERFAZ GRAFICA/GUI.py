@@ -5,6 +5,7 @@ import pygame
 import os
 
 
+
 # Ventana principal
 ventana = tk.Tk()
 ventana.title("Interfaz Gráfica - Proyecto Tkinter")
@@ -15,8 +16,7 @@ ventana.resizable(False, False)
 main_frame = tk.Frame(ventana, bg="#227AFF")
 main_frame.pack(fill=tk.BOTH, expand=True)
 
-# 1. ANÁLISIS DE NÚMEROS 
-
+#ANÁLISIS DE NÚMEROS 
 def encontrar_pares(n, a=1, pares=None):
     """Función recursiva para hallar pares de factores."""
     if pares is None:
@@ -30,7 +30,7 @@ def encontrar_pares(n, a=1, pares=None):
     return encontrar_pares(n, a + 1, pares)
 print (encontrar_pares (10))
 
-# VENTANA ANÁLISIS DE NÚMEROS
+#VENTANA ANÁLISIS DE NÚMEROS
 def abrir_analisis_numeros():
     top = tk.Toplevel(ventana)
     top.title("Análisis de Números")
@@ -49,7 +49,6 @@ def abrir_analisis_numeros():
     resultado_text = tk.Text(top, height=8, width=48, font=("Arial", 10))
     resultado_text.pack(pady=8)
 
-    
 
     def calcular():
         try:
@@ -73,7 +72,10 @@ def abrir_analisis_numeros():
 
     tk.Button(top, text="Calcular", command=calcular, bg="#4CAF50", fg="white", font=("Arial", 10), width=16).pack(pady=8)
 
-# Botón en la ventan(a principal para abrir análisis de pares
+
+
+
+#Botón en la ventanaa principal para abrir análisis de pares
 boton_analisis = tk.Button(
 main_frame,
 text="Abrir Análisis de Pares",
@@ -87,7 +89,7 @@ height=2)
 
 boton_analisis.pack(pady=22)
 
-
+#Botón para abrir ficha personal
 def abrir_ficha_personal():
     top = tk.Toplevel(ventana)
     top.title("Ficha Personal")
@@ -96,21 +98,19 @@ def abrir_ficha_personal():
     fondoo_final=ImageTk.PhotoImage(fondoo)
     top.image = fondoo_final
     fondo = tk.Label(top, image=top.image)
-    fondo.place(x=0, y=0, relwidth=1, relheight=1)
-    
-
-
-              
+    fondo.place(x=0, y=0, relwidth=1, relheight=1)     
     
     def abrir_ficha_personal():
         top = tk.Toplevel(ventana)
         top.title("Ficha Personal")
         top.geometry("580x640")
+        
+
+    
 
 
-
-    #Imagenes
-    img_fondo_pil = Image.open('Fondo ficha personal.jpg').resize((580, 640))
+    #Imagenes de ficha personal
+    img_fondo_pil = Image.open("Fondo ficha personal.jpg").resize((580, 640))
     top.imagen_fondo = ImageTk.PhotoImage(img_fondo_pil) 
     label_fondo = tk.Label(top, image=top.imagen_fondo)
     label_fondo.place(x=0, y=0, relwidth=1, relheight=1)
@@ -131,10 +131,8 @@ def abrir_ficha_personal():
     label_rawayana.place(x=400, y=500)
 
 
-  
 
-
-# Parar detener
+# Parar detener la música
     def detener_musica_auto():
         pygame.mixer.music.stop()
         print("Límite de 10 segundos alcanzado.")
@@ -166,7 +164,7 @@ def abrir_ficha_personal():
     boton_musica.place(x=411, y=410)
     
 
-
+#Información ficha personal
     label_nombre = tk.Label(
         top, 
         text="VICTORIA SOFÍA FERNÁNDEZ MARTÍNEZ",
@@ -212,7 +210,6 @@ def abrir_ficha_personal():
 
 
 # Botón en la ventana principal para la FICHA PERSONAL 
-
 boton_ficha = tk.Button( 
     ventana,
     text="Ficha personal", 
@@ -241,44 +238,90 @@ def abrir_ficha_personal():
     top.title("Ficha Personal")
     top.geometry("580x640")
 
-
-#Boton en la ventana para la animacion
-
+#Animación de esferas 
 def abrir_animacion():
-    top = tk.Toplevel(ventana)  
-    top.title("Animación")
+    top = tk.Toplevel(ventana)
+    top.title("Animación de Esferas")
     top.geometry("580x640")
+    top.configure(bg="#227AFF")
 
-boton_animacion = tk.Button( 
-    ventana,
+
+    #Control de Velocidad 
+    tk.Label(top, text="Ajustar Velocidad:", bg="#227AFF", fg="white").pack()
+    control_vel = tk.Scale(top, from_=1, to=10, orient="horizontal")
+    control_vel.set(3)
+    control_vel.pack(pady=5)
+    canvas = tk.Canvas(top, width=400, height=300, bg="black")
+    canvas.pack(pady=20)
+
+    #Las esferas
+    bola1 = canvas.create_oval(10, 10, 40, 40, fill="red")
+    bola2 = canvas.create_oval(350, 250, 380, 280, fill="yellow")
+
+    # 4. Variables de dirección 
+    
+    vx1 = [1] 
+    vy1 = [1]  
+    vx2 = [-1]
+    vy2 = [-1]
+
+    def mover_esferas():
+       #Para obteener la velocidad
+        v = control_vel.get()
+        
+        pos1 = canvas.coords(bola1)
+        pos2 = canvas.coords(bola2)
+
+        #Rebostes bola1
+        if pos1[0] <= 0 or pos1[2] >= 400:
+            vx1[0] *= -1
+        if pos1[1] <= 0 or pos1[3] >= 300:
+            vy1[0] *= -1
+
+        #Rebotes bola2
+        if pos2[0] <= 0 or pos2[2] >= 400:
+            vx2[0] *= -1
+        if pos2[1] <= 0 or pos2[3] >= 300:
+            vy2[0] *= -1
+
+        #Rebotes entre ellas
+        if abs(pos1[0] - pos2[0]) < 30 and abs(pos1[1] - pos2[1]) < 30:
+            vx1[0] *= -1
+            vy1[0] *= -1
+            vx2[0] *= -1
+            vy2[0] *= -1
+
+        #Mover las bolas
+        canvas.move(bola1, v * vx1[0], v * vy1[0])
+        canvas.move(bola2, v * vx2[0], v * vy2[0])
+
+        #Repetir el movimiento
+        top.after(20, mover_esferas)
+
+    #Iniciar
+    mover_esferas()
+
+    #Botón para cerrar
+    tk.Button(top, text="VOLVER", command=top.destroy).pack(pady=10)
+
+
+
+
+boton_abrir_anim = tk.Button( 
+    ventana,               
     text="Animación", 
     command=abrir_animacion, 
-    bg="#B5220F",
+    bg="#B5220F",          
     fg="white",
     activebackground="#7D0B0B",
     activeforeground="white",
     font=("Arial", 12, "bold"),
     width=24,
-    height=2)
-
-boton_animacion.place(x=186,y=400)
-def abrir_animacion():
-    top = tk.Toplevel(ventana)
-    top.title("Animación")
-    top.geometry("580x640")
-    
-    frame = tk.Frame(top,)
-    frame.pack(fill=tk.BOTH, expand=True)
-    
+    height=2
+)
 
 
-    
-
-
-
-
-
-
+boton_abrir_anim.place(x=186, y=400)
 
 
 ventana.mainloop()
