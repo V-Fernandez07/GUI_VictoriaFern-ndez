@@ -2,6 +2,7 @@ import tkinter as tk
 from tkinter import messagebox
 from PIL import Image, ImageTk
 import pygame
+import os
 
 
 # Ventana principal
@@ -11,7 +12,7 @@ ventana.geometry("620x520")
 ventana.resizable(False, False)
 
 # Frame principal 
-main_frame = tk.Frame(ventana, bg="#5995FB")
+main_frame = tk.Frame(ventana, bg="#227AFF")
 main_frame.pack(fill=tk.BOTH, expand=True)
 
 # 1. ANÁLISIS DE NÚMEROS 
@@ -87,8 +88,6 @@ height=2)
 boton_analisis.pack(pady=22)
 
 
-# Botón en la ventana principal para la FICHA PERSONAL 
-
 def abrir_ficha_personal():
     top = tk.Toplevel(ventana)
     top.title("Ficha Personal")
@@ -98,15 +97,129 @@ def abrir_ficha_personal():
     top.image = fondoo_final
     fondo = tk.Label(top, image=top.image)
     fondo.place(x=0, y=0, relwidth=1, relheight=1)
+    
 
+
+              
+    
+    def abrir_ficha_personal():
+        top = tk.Toplevel(ventana)
+        top.title("Ficha Personal")
+        top.geometry("580x640")
+
+
+
+    #Imagenes
+    img_fondo_pil = Image.open('Fondo ficha personal.jpg').resize((580, 640))
+    top.imagen_fondo = ImageTk.PhotoImage(img_fondo_pil) 
+    label_fondo = tk.Label(top, image=top.imagen_fondo)
+    label_fondo.place(x=0, y=0, relwidth=1, relheight=1)
+
+    img_yo_pil = Image.open('FICHA PERSONAL YO.jpeg').resize((180, 150))
+    top.imagen_perfil = ImageTk.PhotoImage(img_yo_pil)
+    label_foto_perfil = tk.Label(top, image=top.imagen_perfil)
+    label_foto_perfil.place(x=380, y=235) 
+    
+    img_mapa_pil = Image.open('mapa.jpg').resize((160, 110)) 
+    top.imagen_mapa = ImageTk.PhotoImage(img_mapa_pil)
+    label_mapa = tk.Label(top, image=top.imagen_mapa)
+    label_mapa.place(x=130, y=390)
+
+    img_rawayana_pil = Image.open('RAWAYANAjpg.jpg').resize((150, 125))
+    top.imagen_rawayana = ImageTk.PhotoImage(img_rawayana_pil)
+    label_rawayana = tk.Label(top, image=top.imagen_rawayana)
+    label_rawayana.place(x=400, y=500)
+
+
+  
+
+
+# Parar detener
+    def detener_musica_auto():
+        pygame.mixer.music.stop()
+        print("Límite de 10 segundos alcanzado.")
+
+    # Para reproducir
+    def reproducir_musica():
+        try:
+            if not pygame.mixer.get_init():
+                pygame.mixer.init()
+            pygame.mixer.music.load("CANEY.mp3") 
+            pygame.mixer.music.set_volume(0.5)
+            pygame.mixer.music.play()
+           
+
+            # Detener a los 10s
+            top.after(10000, detener_musica_auto)
+        except Exception as e:
+            print(f"Error: {e}")
+
+    #Boton musica
+    boton_musica = tk.Button(
+        top,
+        text="▶ PLAY RAWAYANA",
+        command=reproducir_musica,
+        bg="#FFD700",
+        fg="black",
+        font=("Arial", 10, "bold")
+    )
+    boton_musica.place(x=411, y=410)
+    
+
+
+    label_nombre = tk.Label(
+        top, 
+        text="VICTORIA SOFÍA FERNÁNDEZ MARTÍNEZ",
+        font=("Arial", 11, "bold"),
+        bg="#ffffff", 
+        fg="Black"
+    )
+    label_nombre.pack(anchor="center",pady=20)
+
+
+    label_edad_carnet =tk.Label(
+        top,
+        text=" Carnet: 2026120151    Edad: 18 años",
+        wraplength=100,
+        font=("Arial", 12, "bold"),
+        bg="#ffffff",
+        fg="Black"
+    )
+    label_edad_carnet.pack(anchor="w", padx=10)
+
+    texto_bio = "Biografía:Soy venezolana y me mudé a Costa Rica a los 7 años, soy muy sociable y me parece interesante el tema de tecnología por ende decidí estudiar ingeniería en computadores en el TEC, actualmente juego voleibol en el equipo universitario y vivo en Cartago."
+    label_bio = tk.Label(
+    top, 
+    text=texto_bio, 
+    font=("Arial", 11,"bold" ), 
+    bg="#f5e042", 
+    fg="Black",
+    wraplength=300,  
+    justify="left"
+)
+    label_bio.place(x=142, y=60)
+
+    label_musica=tk.Label(
+     top,
+        text="Funky/Reggae   Rawayana",
+        wraplength=120,
+        font=("Arial", 10, "bold"),
+        bg="#ffffff",
+        fg="Black"   
+    )
+    label_musica.place(x=432, y=450)
+    
+
+
+# Botón en la ventana principal para la FICHA PERSONAL 
 
 boton_ficha = tk.Button( 
     ventana,
     text="Ficha personal", 
     command=abrir_ficha_personal, 
-    bg="#F05B3E",
+    bg="#DB351F",
     fg="white",
-    activebackground="#D12B4D",
+    activebackground="#C21616",
     activeforeground="white",
     font=("Arial", 12, "bold"),
     width=24,
@@ -118,34 +231,55 @@ def abrir_ficha_personal():
     top.title("Ficha Personal")
     top.geometry("580x640")
     
-    frame = tk.Frame(top, bg="#f542c8")
+    frame = tk.Frame(top,)
     frame.pack(fill=tk.BOTH, expand=True)
-
-    # TITULO (Indentado con Tab)
-    tk.Label(top, text="Ficha personal", font=("Arial", 16, "bold"), 
-             bg="white").pack(pady=20)
-
-    # DATOS (Todos indentados para que existan dentro de 'frame')
-    tk.Label(top, text="Nombre: Victoria Sofía Fernández Martínez",
-             font=("Arial", 12, "bold"), bg="#f542c8", fg="white").pack(anchor="w", padx=50, pady=10)
-
-    tk.Label(top, text="Carnet: 2026121151",
-             font=("Arial", 12, "bold"), bg="#f542c8", fg="white").pack(anchor="w", padx=50, pady=10)
-
-    tk.Label(top, text="Edad: 18 años",
-             font=("Arial", 12, "bold"), bg="#f542c8", fg="white").pack(anchor="w", padx=50, pady=10)
-
-    tk.Label(top, text="Género musical: Reggae/Funky",
-             font=("Arial", 12, "bold"), bg="#f542c8", fg="white").pack(anchor="w", padx=50, pady=10)
-
-    tk.Label(top, text="Grupo favorito: Rawayana",
-             font=("Arial", 12, "bold"), bg="#f542c8", fg="white").pack(anchor="w", padx=50, pady=10)
+    boton_ficha.place(x=186,y=200)
 
 
-boton_ficha = tk.Button(ventana, text="Ficha personal", command=abrir_ficha_personal, 
-                        bg="#F05B3E", fg="white", font=("Arial", 12, "bold"), 
-                        width=24, height=2)
-boton_ficha.place(x=186, y=200)
+def abrir_ficha_personal():
+    top = tk.Toplevel(ventana)  
+    top.title("Ficha Personal")
+    top.geometry("580x640")
+
+
+#Boton en la ventana para la animacion
+
+def abrir_animacion():
+    top = tk.Toplevel(ventana)  
+    top.title("Animación")
+    top.geometry("580x640")
+
+boton_animacion = tk.Button( 
+    ventana,
+    text="Animación", 
+    command=abrir_animacion, 
+    bg="#B5220F",
+    fg="white",
+    activebackground="#7D0B0B",
+    activeforeground="white",
+    font=("Arial", 12, "bold"),
+    width=24,
+    height=2)
+
+boton_animacion.place(x=186,y=400)
+def abrir_animacion():
+    top = tk.Toplevel(ventana)
+    top.title("Animación")
+    top.geometry("580x640")
+    
+    frame = tk.Frame(top,)
+    frame.pack(fill=tk.BOTH, expand=True)
+    
+
+
+    
+
+
+
+
+
+
+
 
 ventana.mainloop()
 
